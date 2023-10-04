@@ -5,7 +5,7 @@ from scipy.ndimage.interpolation import zoom
 from streamlit_drawable_canvas import st_canvas
 from utils import process_image
 st.markdown("# Aplicacion de reconocimiento de numeros :pencil: 💻🤖🐱")
-st.image("http://neupy.com/_images/random-digits.png")
+st.image("https://publish-01.obsidian.md/access/1cdaf9ba6820078eca23e7093dd88c22/Images/mnist_30000-letter.png")
 # Load trained model
 model = tf.keras.models.load_model('mi_modelo.h5')
 
