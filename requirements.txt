@@ -3,3 +3,9 @@ numpy
 pandas
 pydeck
 streamlit
+streamlit_drawable_canvas
+numpy
+matplotlib
+tensorflow
+pandas
+scipy
