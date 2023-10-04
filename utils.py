@@ -12,17 +12,28 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import inspect
-import textwrap
+#import inspect
+#import textwrap
 
-import streamlit as st
+#import streamlit as st
 
 
-def show_code(demo):
-    """Showing the code of the demo."""
-    show_code = st.sidebar.checkbox("Show code", True)
-    if show_code:
-        # Showing the code of the demo.
-        st.markdown("## Code")
-        sourcelines, _ = inspect.getsourcelines(demo)
-        st.code(textwrap.dedent("".join(sourcelines[1:])))
+#def show_code(demo):
+#    """Showing the code of the demo."""
+#    show_code = st.sidebar.checkbox("Show code", True)
+#    if show_code:
+#        # Showing the code of the demo.
+#        st.markdown("## Code")
+#        sourcelines, _ = inspect.getsourcelines(demo)
+#        st.code(textwrap.dedent("".join(sourcelines[1:])))
+
+def process_image(image_data, size=28):
+  """Convert drawn image to grayscale and resize to 28x28."""
+  # Convert image to grayscale
+  grayscale_image = np.sum(image_data, axis=2)
+  # Resize image
+  resized_image = zoom(grayscale_image, size / grayscale_image.shape[0])
+  # Normalize pixel values
+  normalized_image = resized_image.astype(np.float32) / 255
+  # Return image as a single row
+  return normalized_image.reshape(1, -1)
