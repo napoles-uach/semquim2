@@ -17,6 +17,7 @@
 
 #import streamlit as st
 import numpy as np
+from scipy.ndimage.interpolation import zoom
 
 
 #def show_code(demo):
