@@ -16,6 +16,7 @@
 #import textwrap
 
 #import streamlit as st
+import numpy as np
 
 
 #def show_code(demo):
