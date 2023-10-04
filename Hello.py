@@ -1,51 +1,39 @@
-# Copyright (c) Streamlit Inc. (2018-2022) Snowflake Inc. (2022)
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 import streamlit as st
-from streamlit.logger import get_logger
+import tensorflow as tf
+import numpy as np
+from scipy.ndimage.interpolation import zoom
+from streamlit_drawable_canvas import st_canvas
+st.markdown("# Digit :blue[Recognition] :green[App] :pencil: 💻🤖")
 
-LOGGER = get_logger(__name__)
+# Load trained model
+model = tf.keras.models.load_model('Demo/mi_modelo.h5')
 
+def process_image(image_data, size=28):
+  """Convert drawn image to grayscale and resize to 28x28."""
+  # Convert image to grayscale
+  grayscale_image = np.sum(image_data, axis=2)
+  # Resize image
+  resized_image = zoom(grayscale_image, size / grayscale_image.shape[0])
+  # Normalize pixel values
+  normalized_image = resized_image.astype(np.float32) / 255
+  # Return image as a single row
+  return normalized_image.reshape(1, -1)
 
-def run():
-    st.set_page_config(
-        page_title="Hello",
-        page_icon="👋",
-    )
-
-    st.write("# Welcome to Streamlit! 👋")
-
-    st.sidebar.success("Select a demo above.")
-
-    st.markdown(
-        """
-        Streamlit is an open-source app framework built specifically for
-        Machine Learning and Data Science projects.
-        **👈 Select a demo from the sidebar** to see some examples
-        of what Streamlit can do!
-        ### Want to learn more?
-        - Check out [streamlit.io](https://streamlit.io)
-        - Jump into our [documentation](https://docs.streamlit.io)
-        - Ask a question in our [community
-          forums](https://discuss.streamlit.io)
-        ### See more complex demos
-        - Use a neural net to [analyze the Udacity Self-driving Car Image
-          Dataset](https://github.com/streamlit/demo-self-driving)
-        - Explore a [New York City rideshare dataset](https://github.com/streamlit/demo-uber-nyc-pickups)
-    """
-    )
-
-
-if __name__ == "__main__":
-    run()
+st.write('Draw a digit:')
+# Display canvas for drawing
+canvas_result = st_canvas(stroke_width=10, height=28*5, width=28*5)
+  
+# Process drawn image and make prediction using model
+if np.any(canvas_result.image_data):
+    #st.write(canvas_result.image_data)
+    # Convert drawn image to grayscale and resize to 28x28
+    processed_image = process_image(canvas_result.image_data)
+    # Make prediction using model
+#    prediction = model.predict(processed_image).argmax()
+    # Display prediction
+    st.header('Prediction:')
+#    st.markdown('This number appears to be a \n # :red[' + str(prediction) + ']')
+else:
+    # Display message if canvas is empty
+    st.header('Prediction:')
+    st.write('No number drawn, please draw a digit to get a prediction.')
